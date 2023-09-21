@@ -1,0 +1,11 @@
+# neovim config packs
+nvim/.config/nvim/lua/* 
+
+# neovim misc
+nvim/.config/nvim/.netrwhist
+
+# tmux plugins
+tmux/.tmux/plugins/*
+
+# .gitkeep to track directory structure
+!**/.gitkeep
