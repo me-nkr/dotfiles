@@ -1,0 +1,7 @@
+#!/usr/bin/bash
+
+offset=$(zenity --entry --text="Reminder after")
+
+if [[ -n $offset ]]; then
+    echo "zenity --notification --text=\"Time is up\! Return to main task\"" | at now + $offset
+fi

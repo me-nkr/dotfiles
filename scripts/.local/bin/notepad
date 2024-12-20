@@ -1,0 +1,16 @@
+#!/usr/bin/bash
+
+scratchpad="false"
+
+while getopts "s" opt ; do
+    case $opt in
+        s) scratchpad="true"
+            ;;
+    esac
+done
+
+if [[ $scratchpad == "true" ]]; then
+    nvim +SP
+else
+    nvim $HOME/Documents/notes.md
+fi

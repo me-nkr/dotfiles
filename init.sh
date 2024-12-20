@@ -16,7 +16,7 @@ fi
 
 # install tmp using git for tmux
 mkdir -p tmux/.tmux/plugins
-git clone https://github.com/tmux-plugins/tpm tmux/.tmux/plugins/tpm
+[[ -d "./tmux/.tmux/plugins/tpm" ]] || git clone https://github.com/tmux-plugins/tpm tmux/.tmux/plugins/tpm
 
 # install vim-plug for neovim
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
@@ -25,3 +25,4 @@ sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.
 # restow everything
 stow -R tmux
 stow -R nvim
+stow -R scripts

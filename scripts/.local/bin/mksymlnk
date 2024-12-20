@@ -1,0 +1,64 @@
+#!/usr/bin/bash
+
+symlink_type_dir="false"
+overwrite_symlink="false"
+
+while getopts "dfp:n:t:i:" opt; do
+    case $opt in
+        p) symlink_source_dir="$OPTARG"
+            ;;
+        t) symlink_target_dir="$OPTARG"
+            ;;
+        n) symlink_target_name="$OPTARG"
+            ;;
+        d) symlink_type_dir="true"
+            ;;
+        f) overwrite_symlink="true"
+            ;;
+        i) symlink_source="$OPTARG"
+            ;;
+        \?) zenity --error --text="invalid option -$OPTARG" >&2
+            exit 1
+            ;;
+    esac
+
+    case $OPTARG in
+        -*) zenity --error --text="option needs a valid argument"
+            exit 1
+            ;;
+    esac
+done
+
+zenity_params=()
+
+[[ $symlink_type_dir == "true" ]] && zenity_params+=(--directory)
+[[ -d $symlink_source_dir ]] && zenity_params+=(--filename="$symlink_source_dir")
+
+[[ -z $symlink_source ]] && symlink_source=$(zenity --file-selection --title="Select symlink source" "${zenity_params[@]}")
+
+[[ -z $symlink_target_name ]] && symlink_target_name="link-$(date +%FT%TZ)"
+[[ -z $symlink_target_dir ]] && symlink_target_dir=$(pwd)
+
+[[ -z $symlink_source ]] && exit 1
+
+if [[ -e $symlink_source ]]; then
+    mkdir -p $symlink_target_dir && cd $symlink_target_dir
+
+    if [[ -e $symlink_target_name || -h $symlink_target_name ]]; then
+        [[ -h $symlink_target_name ]] && filetype="symlink" || filetype="file"
+
+        if [[ $overwrite_symlink != "true" ]]; then
+            overwrite_symlink=$(zenity --question --title="Overwriting $filetype" && echo "true" || echo "false")
+        fi
+
+        if [[ $overwrite_symlink == "true" ]]; then
+            rm $symlink_target_name
+        else
+            zenity --error --text="overwrite aborted"
+            exit 1
+        fi
+    fi
+    ln -s $symlink_source $symlink_target_name
+else
+    zenity --error --text="non existent symlink source"
+fi
