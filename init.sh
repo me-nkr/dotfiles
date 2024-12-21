@@ -27,3 +27,4 @@ stow -R tmux
 stow -R nvim
 stow -R git
 stow -R scripts
+stow -R freecad
