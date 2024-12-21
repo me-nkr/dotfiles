@@ -2,22 +2,39 @@
 
 tmux_ressurect_sessions_path="$HOME/.local/share/tmux/resurrect"
 
-read -r temp_file < /tmp/ipcc
-session_name=$1
+tmux set -g @resurrect-hook-post-save-layout "echo"
 
-echo $temp_file
-echo $session_name
+save_script=$(tmux show-options -gqv @resurrect-save-script-path)
 
-notify='tmux display-message -d 0 "Session \$2 was saved"'
+last_session_file="$tmux_ressurect_sessions_path/last"
 
-if [[ $2 == "new" ]]; then
+[[ -L $last_session_file ]] && rm $last_session_file
 
-    cmd="mv\ $temp_file\ %1\ >\ \/tmp\/tmux-log 2>&1\ && $notify"
-    tmux command-prompt -p "New session name:,Confirm?"  "run $cmd"
+temp_file=$(tmux run $save_script)
+
+notify() {
+
+    echo "tmux display-message -d 2 \\\"Session $1 was saved\\\""
+}
+
+resetlast() {
+
+    echo "rm $last_session_file && ln -s $tmux_ressurect_sessions_path/$1 $last_session_file"
+}
+
+confirm() {
+
+    echo "confirm-before -p 'Save session as $1? (y/n)'"
+}
+
+if [[ $1 == "new" ]]; then
+
+    cmd="mv $temp_file $tmux_ressurect_sessions_path/%1 && $(notify %1) && $(resetlast %1)"
+    tmux command-prompt -p "New session name:" "$(confirm %1) 'run \"$cmd\"'"
 
 else
 
-    cmd='mv \$1 $session_name > /tmp/tmux-log 2>&1  && \$notify'
-    tmux command-prompt -p "Confirm?" 'run "$cmd"'
+    cmd="mv $temp_file $1 && $(notify $(basename $1)) && $(resetlast $(basename $1))"
+    tmux confirm-before -p "Save session to $(basename $1)? (y/n)" "run \"$cmd\""
 
 fi

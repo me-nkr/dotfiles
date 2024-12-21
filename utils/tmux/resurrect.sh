@@ -17,11 +17,11 @@ for idx in "${!file_list[@]}"; do
 
     if [[ $1 == "-s" ]]; then
 
-        cmd="\$HOME/dotfiles/utils/tmux/resurrect-save.sh '$filename' > /tmp/tmux-log 2>&1"
+        cmd="\$HOME/dotfiles/utils/tmux/resurrect-save.sh '$filename'"
 
     else
 
-        cmd="\$HOME/dotfiles/utils/tmux/resurrect-restore.sh '$filename' > /tmp/tmux-log 2>&1"
+        cmd="\$HOME/dotfiles/utils/tmux/resurrect-restore.sh '$filename'"
 
     fi
 
