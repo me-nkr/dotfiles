@@ -25,4 +25,5 @@ sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.
 # restow everything
 stow -R tmux
 stow -R nvim
+stow -R git
 stow -R scripts
