@@ -23,6 +23,7 @@ sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
 # restow everything
+stow -R bash
 stow -R tmux
 stow -R nvim
 stow -R git

@@ -1,0 +1,15 @@
+gitree() {
+
+    dir=""
+
+    for arg in $@; do
+
+        [[ -f $arg ]] && dir=$arg && break;
+
+    done
+
+    [[ -n $dir ]] && cd $dir;
+
+    tree --gitignore -I ".git/" $*
+
+}
