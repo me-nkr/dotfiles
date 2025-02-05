@@ -4,3 +4,5 @@
 	defaultBranch = main
 [core]
 	excludesFile = ~/.gitignore
+[alias]
+    graph = log --all --decorate --oneline --graph --format=format:'%C(bold green)(%ar)%C(reset) by %C(dim white) %aN%C(reset)%C(auto)%d%C(reset)%n%C(white)%s%C(reset)%n'
