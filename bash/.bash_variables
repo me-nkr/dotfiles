@@ -1,3 +1,6 @@
+# path
+export PATH="$PATH:$HOME/.local/bin"
+
 # volta (nodejs)
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
