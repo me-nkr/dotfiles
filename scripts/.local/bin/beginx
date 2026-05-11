@@ -1,0 +1,27 @@
+#!/usr/bin/bash
+
+export DISPLAY=:0
+
+VT=2
+
+sudo whoami > /dev/null
+
+sudo Xorg $DISPLAY vt$VT &
+
+sleep 1
+
+echo "x" | xclip -i -selection clipboard
+
+xrdb -merge $HOME/.config/X11/Xresources.d/00-xterm
+
+sxhkd &
+
+sudo systemd-run \
+    --uid=1000 \
+    --gid=1000 \
+    --property=PAMName=login \
+    --property=TTYPath=/dev/tty2 \
+    -E DISPLAY=$DISPLAY \
+    xterm -maximized
+
+sudo chvt $VT
