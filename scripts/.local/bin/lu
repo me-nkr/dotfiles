@@ -1,0 +1,13 @@
+#!/usr/bin/bash
+
+APP=$1
+
+case "$APP" in
+    quteb) qutebrowser --qt-arg geometry 1920x1080+0+0 > /dev/null 2>&1 &
+    ;;
+    xterm) xterm -maximized > /dev/null 2>&1 &
+    ;;
+    *) echo type in a valid app name
+    ;;
+esac
+
